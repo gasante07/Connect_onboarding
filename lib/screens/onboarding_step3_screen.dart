@@ -105,6 +105,21 @@ class _OnboardingStep3ScreenState extends State<OnboardingStep3Screen>
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    final isSmall = media.size.width < 380;
+    final horizontalPadding =
+        isSmall ? AppTheme.spacingLG : AppTheme.spacing2XL;
+    final cardPadding =
+        EdgeInsets.all(isSmall ? AppTheme.spacing2XL : AppTheme.spacing3XL);
+    final titleSize =
+        isSmall ? AppTheme.fontSize2XL : AppTheme.fontSize3XL;
+    final subtitleSize =
+        isSmall ? AppTheme.fontSizeSM : AppTheme.fontSizeMD;
+    final topSpacing =
+        isSmall ? AppTheme.spacing2XL : AppTheme.spacing3XL;
+    final blockSpacing =
+        isSmall ? AppTheme.spacing3XL : AppTheme.spacing4XL;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -112,121 +127,121 @@ class _OnboardingStep3ScreenState extends State<OnboardingStep3Screen>
         imagePaths: AppAssets.onboardingCarouselImages,
         overlayColor: Colors.black,
         overlayOpacity: AppTheme.overlayOpacityLight,
+        imagesPerCollage: media.size.width < 500 ? 2 : 4,
         child: SafeArea(
           child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: SlideTransition(
-            position: _slideAnimation,
-            child: Column(
-              children: [
-                // Top section with progress indicator
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: AppTheme.spacing2XL),
+            opacity: _fadeAnimation,
+            child: SlideTransition(
+              position: _slideAnimation,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: horizontalPadding,
+                  right: horizontalPadding,
+                  top: AppTheme.spacingXL,
+                  bottom: AppTheme.spacingXL,
+                ),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 640),
                   child: Column(
                     children: [
-                      SizedBox(height: AppTheme.spacing3XL),
-                      // Progress indicator
-                      const ProgressIndicatorWidget(
-                        currentStep: 3,
-                        totalSteps: 3,
+                      Padding(
+                        padding: EdgeInsets.only(top: topSpacing),
+                        child: Column(
+                          children: [
+                            const ProgressIndicatorWidget(
+                              currentStep: 3,
+                              totalSteps: 3,
+                            ),
+                            SizedBox(height: AppTheme.spacing2XL),
+                            MotivationalTextWidget(
+                              text: AppCopy.onboardingStep3Motivation,
+                            ),
+                            SizedBox(height: blockSpacing),
+                          ],
+                        ),
                       ),
-                      SizedBox(height: AppTheme.spacing2XL),
-                      // Motivational text
-                      MotivationalTextWidget(
-                        text: AppCopy.onboardingStep3Motivation,
-                      ),
-                      SizedBox(height: AppTheme.spacing4XL),
-                    ],
-                  ),
-                ),
-                // Main content card with scrollable list
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: AppTheme.spacing2XL),
-                    child: GlassCardWidget(
-                      borderRadius: AppTheme.cardBorderRadius,
-                      padding: EdgeInsets.all(AppTheme.spacing3XL),
-                      opacity: 1.0,
-                      blurIntensity: 0.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Title
-                          Text(
-                            AppCopy.onboardingStep3Title,
-                            style: GoogleFonts.inter(
-                              fontSize: AppTheme.fontSize3XL,
-                              fontWeight: AppTheme.fontWeightBold,
-                              color: AppTheme.textPrimary,
-                              letterSpacing: AppTheme.letterSpacingTight,
-                              height: 1.2,
-                            ),
-                          ),
-                          SizedBox(height: AppTheme.spacingMD),
-                          // Subtitle
-                          Text(
-                            AppCopy.onboardingStep3Subtitle,
-                            style: GoogleFonts.inter(
-                              fontSize: AppTheme.fontSizeMD,
-                              fontWeight: AppTheme.fontWeightRegular,
-                              color: AppTheme.textSecondary,
-                              letterSpacing: AppTheme.letterSpacingNormal,
-                              height: 1.5,
-                            ),
-                          ),
-                          SizedBox(height: AppTheme.spacing5XL),
-                          // Scrollable sport list
-                          Expanded(
-                            child: ListView.builder(
-                              itemCount: _sportRatings.length,
-                              itemBuilder: (context, index) {
-                                final sportName = _sportRatings.keys.elementAt(index);
-                                final rating = _sportRatings[sportName]!;
-                                final icon = _sportIcons[sportName]!;
-                                
-                                return SportSelectionItemWidget(
-                                  sportName: sportName,
-                                  icon: icon,
-                                  rating: rating,
-                                  onRatingChanged: (newRating) {
-                                    _handleRatingChanged(sportName, newRating);
-                                  },
-                                );
-                              },
-                            ),
-                          ),
-                          SizedBox(height: AppTheme.spacing3XL),
-                          // Navigation buttons
-                          Row(
+                      GlassCardWidget(
+                        borderRadius: AppTheme.cardBorderRadius,
+                        padding: cardPadding,
+                        opacity: 1.0,
+                        blurIntensity: 0.0,
+                        child: SizedBox(
+                          height: media.size.height * (isSmall ? 0.65 : 0.7),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Back button
-                              Expanded(
-                                child: OutlinedButtonWidget(
-                                  text: AppCopy.backButton,
-                                  onPressed: _handleBack,
+                              Text(
+                                AppCopy.onboardingStep3Title,
+                                style: GoogleFonts.inter(
+                                  fontSize: titleSize,
+                                  fontWeight: AppTheme.fontWeightBold,
+                                  color: AppTheme.textPrimary,
+                                  letterSpacing: AppTheme.letterSpacingTight,
+                                  height: 1.2,
                                 ),
                               ),
-                              SizedBox(width: AppTheme.spacingLG),
-                              // Register button
-                              Expanded(
-                                child: PremiumButton(
-                                  text: AppCopy.registerButton,
-                                  onPressed: _handleRegister,
+                              SizedBox(height: AppTheme.spacingMD),
+                              Text(
+                                AppCopy.onboardingStep3Subtitle,
+                                style: GoogleFonts.inter(
+                                  fontSize: subtitleSize,
+                                  fontWeight: AppTheme.fontWeightRegular,
+                                  color: AppTheme.textSecondary,
+                                  letterSpacing: AppTheme.letterSpacingNormal,
+                                  height: 1.5,
                                 ),
+                              ),
+                              SizedBox(height: isSmall ? AppTheme.spacing4XL : AppTheme.spacing5XL),
+                              Expanded(
+                                child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: _sportRatings.length,
+                                  itemBuilder: (context, index) {
+                                    final sportName = _sportRatings.keys.elementAt(index);
+                                    final rating = _sportRatings[sportName]!;
+                                    final icon = _sportIcons[sportName]!;
+                                    
+                                    return SportSelectionItemWidget(
+                                      sportName: sportName,
+                                      icon: icon,
+                                      rating: rating,
+                                      onRatingChanged: (newRating) {
+                                        _handleRatingChanged(sportName, newRating);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: AppTheme.spacing3XL),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButtonWidget(
+                                      text: AppCopy.backButton,
+                                      onPressed: _handleBack,
+                                    ),
+                                  ),
+                                  SizedBox(width: AppTheme.spacingLG),
+                                  Expanded(
+                                    child: PremiumButton(
+                                      text: AppCopy.registerButton,
+                                      onPressed: _handleRegister,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      SizedBox(height: AppTheme.spacing2XL),
+                    ],
                   ),
                 ),
-                SizedBox(height: AppTheme.spacing2XL),
-              ],
+              ),
             ),
           ),
         ),
-      ),
       ),
     );
   }

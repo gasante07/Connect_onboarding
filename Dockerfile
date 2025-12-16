@@ -37,8 +37,10 @@ RUN flutter pub get
 # Copy source code
 COPY . .
 
-# Build Flutter web app
-RUN flutter build web --release --web-renderer canvaskit
+# Build Flutter web app (default to HTML renderer for better mobile compatibility)
+# Change WEB_RENDERER to "canvaskit" if you specifically need it.
+ARG WEB_RENDERER=html
+RUN flutter build web --release --web-renderer ${WEB_RENDERER} --pwa-strategy=none
 
 # Production stage - Minimal nginx image
 FROM nginx:alpine

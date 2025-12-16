@@ -95,6 +95,21 @@ class _OnboardingStep2ScreenState extends State<OnboardingStep2Screen>
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    final isSmall = media.size.width < 380;
+    final horizontalPadding =
+        isSmall ? AppTheme.spacingLG : AppTheme.spacing2XL;
+    final cardPadding =
+        EdgeInsets.all(isSmall ? AppTheme.spacing2XL : AppTheme.spacing3XL);
+    final titleSize =
+        isSmall ? AppTheme.fontSize2XL : AppTheme.fontSize3XL;
+    final subtitleSize =
+        isSmall ? AppTheme.fontSizeSM : AppTheme.fontSizeMD;
+    final topSpacing =
+        isSmall ? AppTheme.spacing2XL : AppTheme.spacing3XL;
+    final blockSpacing =
+        isSmall ? AppTheme.spacing3XL : AppTheme.spacing4XL;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -102,115 +117,117 @@ class _OnboardingStep2ScreenState extends State<OnboardingStep2Screen>
         imagePaths: AppAssets.onboardingCarouselImages,
         overlayColor: Colors.black,
         overlayOpacity: AppTheme.overlayOpacityLight,
+        imagesPerCollage: media.size.width < 500 ? 2 : 4,
         child: SafeArea(
-          child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppTheme.spacing2XL),
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: SlideTransition(
-              position: _slideAnimation,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: AppTheme.spacing3XL),
-                  // Progress indicator
-                  const ProgressIndicatorWidget(
-                    currentStep: 2,
-                    totalSteps: 3,
-                  ),
-                  SizedBox(height: AppTheme.spacing2XL),
-                  // Motivational text
-                  MotivationalTextWidget(
-                    text: AppCopy.onboardingStep2Motivation,
-                  ),
-                  SizedBox(height: AppTheme.spacing4XL),
-                  // Main form card
-                  GlassCardWidget(
-                    borderRadius: AppTheme.cardBorderRadius,
-                    padding: EdgeInsets.all(AppTheme.spacing3XL),
-                    opacity: 1.0,
-                    blurIntensity: 0.0,
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Title
-                          Text(
-                            AppCopy.onboardingStep2Title,
-                            style: GoogleFonts.inter(
-                              fontSize: AppTheme.fontSize3XL,
-                              fontWeight: AppTheme.fontWeightBold,
-                              color: AppTheme.textPrimary,
-                              letterSpacing: AppTheme.letterSpacingTight,
-                              height: 1.2,
+          child: Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                AppTheme.spacingXL,
+                horizontalPadding,
+                AppTheme.spacingXL,
+              ),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 560),
+                child: FadeTransition(
+                  opacity: _fadeAnimation,
+                  child: SlideTransition(
+                    position: _slideAnimation,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: topSpacing),
+                        const ProgressIndicatorWidget(
+                          currentStep: 2,
+                          totalSteps: 3,
+                        ),
+                        SizedBox(height: AppTheme.spacing2XL),
+                        MotivationalTextWidget(
+                          text: AppCopy.onboardingStep2Motivation,
+                        ),
+                        SizedBox(height: blockSpacing),
+                        GlassCardWidget(
+                          borderRadius: AppTheme.cardBorderRadius,
+                          padding: cardPadding,
+                          opacity: 1.0,
+                          blurIntensity: 0.0,
+                          child: Form(
+                            key: _formKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  AppCopy.onboardingStep2Title,
+                                  style: GoogleFonts.inter(
+                                    fontSize: titleSize,
+                                    fontWeight: AppTheme.fontWeightBold,
+                                    color: AppTheme.textPrimary,
+                                    letterSpacing: AppTheme.letterSpacingTight,
+                                    height: 1.2,
+                                  ),
+                                ),
+                                SizedBox(height: AppTheme.spacingMD),
+                                Text(
+                                  AppCopy.onboardingStep2Subtitle,
+                                  style: GoogleFonts.inter(
+                                    fontSize: subtitleSize,
+                                    fontWeight: AppTheme.fontWeightRegular,
+                                    color: AppTheme.textSecondary,
+                                    letterSpacing:
+                                        AppTheme.letterSpacingNormal,
+                                    height: 1.5,
+                                  ),
+                                ),
+                                SizedBox(height: isSmall ? AppTheme.spacing4XL : AppTheme.spacing5XL),
+                                LabeledTextFieldWidget(
+                                  label: AppCopy.usernameLabel,
+                                  hintText: AppCopy.usernamePlaceholder,
+                                  controller: _usernameController,
+                                  keyboardType: TextInputType.text,
+                                  validator: _validateUsername,
+                                  icon: Icons.person_outlined,
+                                ),
+                                SizedBox(height: AppTheme.spacing3XL),
+                                LabeledTextFieldWidget(
+                                  label: AppCopy.cityLabel,
+                                  hintText: AppCopy.cityPlaceholder,
+                                  controller: _cityController,
+                                  keyboardType: TextInputType.text,
+                                  validator: _validateCity,
+                                  icon: Icons.location_city_outlined,
+                                ),
+                                SizedBox(height: isSmall ? AppTheme.spacing4XL : AppTheme.spacing5XL),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: OutlinedButtonWidget(
+                                        text: AppCopy.backButton,
+                                        onPressed: _handleBack,
+                                      ),
+                                    ),
+                                    SizedBox(width: AppTheme.spacingLG),
+                                    Expanded(
+                                      child: PremiumButton(
+                                        text: AppCopy.continueButton,
+                                        onPressed: _handleContinue,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
-                          SizedBox(height: AppTheme.spacingMD),
-                          // Subtitle
-                          Text(
-                            AppCopy.onboardingStep2Subtitle,
-                            style: GoogleFonts.inter(
-                              fontSize: AppTheme.fontSizeMD,
-                              fontWeight: AppTheme.fontWeightRegular,
-                              color: AppTheme.textSecondary,
-                              letterSpacing: AppTheme.letterSpacingNormal,
-                              height: 1.5,
-                            ),
-                          ),
-                          SizedBox(height: AppTheme.spacing5XL),
-                          // Username field
-                          LabeledTextFieldWidget(
-                            label: AppCopy.usernameLabel,
-                            hintText: AppCopy.usernamePlaceholder,
-                            controller: _usernameController,
-                            keyboardType: TextInputType.text,
-                            validator: _validateUsername,
-                            icon: Icons.person_outlined,
-                          ),
-                          SizedBox(height: AppTheme.spacing3XL),
-                          // City field
-                          LabeledTextFieldWidget(
-                            label: AppCopy.cityLabel,
-                            hintText: AppCopy.cityPlaceholder,
-                            controller: _cityController,
-                            keyboardType: TextInputType.text,
-                            validator: _validateCity,
-                            icon: Icons.location_city_outlined,
-                          ),
-                          SizedBox(height: AppTheme.spacing5XL),
-                          // Navigation buttons
-                          Row(
-                            children: [
-                              // Back button
-                              Expanded(
-                                child: OutlinedButtonWidget(
-                                  text: AppCopy.backButton,
-                                  onPressed: _handleBack,
-                                ),
-                              ),
-                              SizedBox(width: AppTheme.spacingLG),
-                              // Continue button
-                              Expanded(
-                                child: PremiumButton(
-                                  text: AppCopy.continueButton,
-                                  onPressed: _handleContinue,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(height: blockSpacing),
+                      ],
                     ),
                   ),
-                  SizedBox(height: AppTheme.spacing4XL),
-                ],
+                ),
               ),
             ),
           ),
         ),
-      ),
       ),
     );
   }

@@ -84,12 +84,23 @@ class _OnboardingConfirmationScreenState extends State<OnboardingConfirmationScr
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    final isSmall = media.size.width < 380;
+    final horizontalPadding =
+        isSmall ? AppTheme.spacingLG : AppTheme.spacing2XL;
+    final cardPadding =
+        EdgeInsets.all(isSmall ? AppTheme.spacing3XL : AppTheme.spacing5XL);
+    final titleSize =
+        isSmall ? AppTheme.fontSize2XL : AppTheme.fontSize3XL;
+    final bodySize =
+        isSmall ? AppTheme.fontSizeSM : AppTheme.fontSizeMD;
+
     return Scaffold(
       backgroundColor: AppTheme.backgroundColorGrey100,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: AppTheme.spacing2XL),
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: SlideTransition(
@@ -98,7 +109,7 @@ class _OnboardingConfirmationScreenState extends State<OnboardingConfirmationScr
                   scale: _scaleAnimation,
                   child: GlassCardWidget(
                     borderRadius: AppTheme.cardBorderRadius,
-                    padding: EdgeInsets.all(AppTheme.spacing5XL),
+                    padding: cardPadding,
                     opacity: 1.0,
                     blurIntensity: 0.0,
                     child: Column(
@@ -115,7 +126,7 @@ class _OnboardingConfirmationScreenState extends State<OnboardingConfirmationScr
                           AppCopy.confirmationTitle,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.inter(
-                            fontSize: AppTheme.fontSize3XL,
+                            fontSize: titleSize,
                             fontWeight: AppTheme.fontWeightBold,
                             color: AppTheme.textPrimary,
                             letterSpacing: AppTheme.letterSpacingTight,
@@ -128,7 +139,7 @@ class _OnboardingConfirmationScreenState extends State<OnboardingConfirmationScr
                           AppCopy.confirmationDescription,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.inter(
-                            fontSize: AppTheme.fontSizeMD,
+                            fontSize: bodySize,
                             fontWeight: AppTheme.fontWeightRegular,
                             color: AppTheme.textSecondary,
                             letterSpacing: AppTheme.letterSpacingNormal,
@@ -160,7 +171,7 @@ class _OnboardingConfirmationScreenState extends State<OnboardingConfirmationScr
                                   AppCopy.confirmationMotivation,
                                   textAlign: TextAlign.left,
                                   style: GoogleFonts.inter(
-                                    fontSize: AppTheme.fontSizeMD,
+                                    fontSize: bodySize,
                                     fontWeight: AppTheme.fontWeightMedium,
                                     color: AppTheme.textPrimary,
                                     letterSpacing: AppTheme.letterSpacingNormal,

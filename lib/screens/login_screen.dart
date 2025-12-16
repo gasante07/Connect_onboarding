@@ -78,6 +78,19 @@ class _LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context);
+    final isSmall = media.size.width < 380;
+    final horizontalPadding =
+        isSmall ? AppTheme.spacingLG : AppTheme.spacing2XL;
+    final cardPadding =
+        EdgeInsets.all(isSmall ? AppTheme.spacing3XL : AppTheme.spacing4XL);
+    final titleSize =
+        isSmall ? AppTheme.fontSizeXL : AppTheme.fontSize2XL;
+    final bodySize =
+        isSmall ? AppTheme.fontSizeSM : AppTheme.fontSizeMD;
+    final topSpacing =
+        isSmall ? AppTheme.spacing3XL : AppTheme.spacing4XL;
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       extendBodyBehindAppBar: true,
@@ -85,10 +98,11 @@ class _LoginScreenState extends State<LoginScreen>
         imagePaths: AppAssets.onboardingCarouselImages,
         overlayColor: Colors.black,
         overlayOpacity: AppTheme.overlayOpacityDark,
+        imagesPerCollage: media.size.width < 500 ? 2 : 4,
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(horizontal: AppTheme.spacing2XL),
+              padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
               child: FadeTransition(
                 opacity: _fadeAnimation,
                 child: SlideTransition(
@@ -98,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen>
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: AppTheme.spacing4XL),
+                        SizedBox(height: topSpacing),
                         LogoWidget.small(),
                         SizedBox(height: AppTheme.spacing3XL),
                         // Clean copy
@@ -107,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen>
                         // Modern form card
                         GlassCardWidget(
                           borderRadius: AppTheme.cardBorderRadius,
-                          padding: EdgeInsets.all(AppTheme.spacing4XL),
+                          padding: cardPadding,
                           opacity: 1.0,
                           blurIntensity: 0.0,
                           child: Column(
@@ -119,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 'Welcome back',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.inter(
-                                  fontSize: AppTheme.fontSize2XL,
+                                  fontSize: titleSize,
                                   fontWeight: AppTheme.fontWeightBold,
                                   color: AppTheme.textPrimary,
                                   letterSpacing: AppTheme.letterSpacingTight,
@@ -131,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen>
                                 'Sign in to continue',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.inter(
-                                  fontSize: AppTheme.fontSizeMD,
+                                  fontSize: bodySize,
                                   fontWeight: AppTheme.fontWeightRegular,
                                   color: AppTheme.textSecondary,
                                   letterSpacing: AppTheme.letterSpacingNormal,

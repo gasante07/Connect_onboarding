@@ -44,7 +44,7 @@ class CarouselBackgroundWidget extends StatefulWidget {
 
 class _CarouselBackgroundWidgetState extends State<CarouselBackgroundWidget> {
   late PageController _pageController;
-  late Timer _timer;
+  Timer? _timer;
   late List<List<String>> _collageGroups;
 
   @override
@@ -65,7 +65,7 @@ class _CarouselBackgroundWidgetState extends State<CarouselBackgroundWidget> {
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     _pageController.dispose();
     super.dispose();
   }
