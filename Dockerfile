@@ -25,6 +25,7 @@ ENV PATH="${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin:${PATH}"
 # Run config as root since PATH is set, then switch to flutter user for builds
 RUN git clone https://github.com/flutter/flutter.git -b stable ${FLUTTER_HOME} && \
     chown -R flutter:flutter ${FLUTTER_HOME} && \
+    git config --global --add safe.directory ${FLUTTER_HOME} && \
     flutter config --enable-web
 
 WORKDIR /app
