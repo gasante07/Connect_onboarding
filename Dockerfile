@@ -26,7 +26,8 @@ ENV PATH="${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin:${PATH}"
 RUN git clone https://github.com/flutter/flutter.git -b stable ${FLUTTER_HOME} && \
     chown -R flutter:flutter ${FLUTTER_HOME} && \
     git config --global --add safe.directory ${FLUTTER_HOME} && \
-    flutter config --enable-web
+    flutter config --enable-web && \
+    chown -R flutter:flutter ${FLUTTER_HOME}
 
 WORKDIR /app
 RUN chown -R flutter:flutter /app
@@ -35,7 +36,9 @@ RUN chown -R flutter:flutter /app
 COPY --chown=flutter:flutter pubspec.yaml ./
 
 # Get dependencies as flutter user
+# Set HOME so Flutter can use user's home directory for cache
 USER flutter
+ENV HOME=/home/flutter
 RUN flutter pub get
 
 # Copy source code
