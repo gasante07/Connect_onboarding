@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - FLUTTER_BASE_HREF=/
+    # Uncomment to mount local code for development
+    # volumes:
+    #   - ./lib:/app/lib
+    #   - ./assets:/app/assets
+

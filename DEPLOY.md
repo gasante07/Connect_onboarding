@@ -106,41 +106,25 @@ If you prefer to configure manually without render.yaml:
 - Verify asset paths are correct in your Dart code
 - Check that assets are copied to `build/web` during build
 
-## Alternative: Using Docker
+## Dockerfile Architecture
 
-If you encounter issues with Flutter on Render's default environment, you can use a Dockerfile:
+The Dockerfile uses a **multi-stage build** approach:
 
-```dockerfile
-FROM ubuntu:22.04
+1. **Builder Stage**: Installs Flutter SDK and builds the web app
+2. **Production Stage**: Uses lightweight nginx to serve static files
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    unzip \
-    xz-utils \
-    zip \
-    libglu1-mesa
+**Key Features:**
+- ✅ Simple and maintainable (no complex user permission management)
+- ✅ Optimized layer caching (pubspec.yaml copied first)
+- ✅ Security: Non-root user in production stage
+- ✅ Performance: Static asset caching headers
+- ✅ Scalable: Easy to update Flutter version or add build steps
 
-# Install Flutter
-ENV FLUTTER_VERSION=3.24.0
-RUN git clone https://github.com/flutter/flutter.git -b stable /usr/local/flutter
-ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
-
-WORKDIR /app
-COPY . .
-
-# Build Flutter web
-RUN flutter pub get && flutter build web --release
-
-# Serve with a simple HTTP server
-FROM nginx:alpine
-COPY --from=0 /app/build/web /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-Then update `render.yaml` to use Docker instead of static site.
+**Why This Approach:**
+- Running Flutter builds as root in the build stage is standard practice and acceptable
+- Only the final nginx stage runs as non-root for security
+- Simpler structure means easier debugging and maintenance
+- Better Docker layer caching improves build times
 
 ## Support
 
