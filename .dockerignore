@@ -1,0 +1,36 @@
+# Flutter SDK (not needed in Docker, we install it)
+flutter sdk/
+
+# Build outputs (will be generated in Docker)
+build/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+
+# Dart/Flutter cache
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+pubspec.lock
