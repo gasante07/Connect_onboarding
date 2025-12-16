@@ -21,10 +21,11 @@ ENV FLUTTER_VERSION=3.24.0
 ENV FLUTTER_HOME=/usr/local/flutter
 ENV PATH="${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin:${PATH}"
 
-# Install Flutter as the flutter user (skip doctor to avoid Gradle issues)
+# Install Flutter (skip doctor to avoid Gradle issues)
+# Run config as root since PATH is set, then switch to flutter user for builds
 RUN git clone https://github.com/flutter/flutter.git -b stable ${FLUTTER_HOME} && \
     chown -R flutter:flutter ${FLUTTER_HOME} && \
-    su flutter -c "flutter config --enable-web"
+    flutter config --enable-web
 
 WORKDIR /app
 RUN chown -R flutter:flutter /app
