@@ -46,6 +46,12 @@ class SportSelectionItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isNarrow = MediaQuery.of(context).size.width < 340;
+    final nameSize = isNarrow ? AppTheme.fontSizeSM : AppTheme.fontSizeMD;
+    final starSize = isNarrow ? 18.0 : 20.0;
+    final horizontalGap = isNarrow ? AppTheme.spacingSM : AppTheme.spacingLG;
+    final iconBox = isNarrow ? 44.0 : 48.0;
+
     return Container(
       margin: EdgeInsets.only(bottom: AppTheme.spacingLG),
       decoration: BoxDecoration(
@@ -61,13 +67,13 @@ class SportSelectionItemWidget extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.all(AppTheme.spacingLG),
+        padding: EdgeInsets.all(isNarrow ? AppTheme.spacingMD : AppTheme.spacingLG),
         child: Row(
           children: [
             // Sport icon
             Container(
-              width: 48,
-              height: 48,
+              width: iconBox,
+              height: iconBox,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: AppTheme.backgroundColorGrey100,
@@ -80,17 +86,19 @@ class SportSelectionItemWidget extends StatelessWidget {
                     ),
               ),
             ),
-            SizedBox(width: AppTheme.spacingLG),
+            SizedBox(width: horizontalGap),
             // Sport name
             Expanded(
               child: Text(
                 sportName,
                 style: GoogleFonts.inter(
-                  fontSize: AppTheme.fontSizeMD,
+                  fontSize: nameSize,
                   fontWeight: AppTheme.fontWeightMedium,
                   color: AppTheme.textPrimary,
                   letterSpacing: AppTheme.letterSpacingNormal,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             SizedBox(width: AppTheme.spacingMD),
@@ -101,7 +109,7 @@ class SportSelectionItemWidget extends StatelessWidget {
                 StarRatingWidget(
                   rating: rating,
                   maxStars: 3,
-                  starSize: 20.0,
+                  starSize: starSize,
                   onRatingChanged: onRatingChanged,
                 ),
                 SizedBox(height: AppTheme.spacingXS),
