@@ -22,6 +22,19 @@ class SportSelectionItemWidget extends StatelessWidget {
   /// Optional custom icon widget (if not using emoji)
   final Widget? iconWidget;
 
+  String _skillLabel(int value) {
+    switch (value) {
+      case 1:
+        return 'Newbie';
+      case 2:
+        return 'Intermediate';
+      case 3:
+        return 'Advanced';
+      default:
+        return 'Not set';
+    }
+  }
+
   const SportSelectionItemWidget({
     super.key,
     required this.sportName,
@@ -82,11 +95,35 @@ class SportSelectionItemWidget extends StatelessWidget {
             ),
             SizedBox(width: AppTheme.spacingMD),
             // Star rating
-            StarRatingWidget(
-              rating: rating,
-              maxStars: 3,
-              starSize: 20.0,
-              onRatingChanged: onRatingChanged,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                StarRatingWidget(
+                  rating: rating,
+                  maxStars: 3,
+                  starSize: 20.0,
+                  onRatingChanged: onRatingChanged,
+                ),
+                SizedBox(height: AppTheme.spacingXS),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppTheme.spacingSM,
+                    vertical: AppTheme.spacingXS,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primary600.withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    _skillLabel(rating),
+                    style: GoogleFonts.inter(
+                      fontSize: AppTheme.fontSizeXS,
+                      fontWeight: AppTheme.fontWeightMedium,
+                      color: AppTheme.primary700,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

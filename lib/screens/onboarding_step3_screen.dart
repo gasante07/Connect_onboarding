@@ -140,33 +140,71 @@ class _OnboardingStep3ScreenState extends State<OnboardingStep3Screen>
                   top: AppTheme.spacingXL,
                   bottom: AppTheme.spacingXL,
                 ),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 640),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: topSpacing),
-                        child: Column(
-                          children: [
-                            const ProgressIndicatorWidget(
-                              currentStep: 3,
-                              totalSteps: 3,
-                            ),
-                            SizedBox(height: AppTheme.spacing2XL),
-                            MotivationalTextWidget(
-                              text: AppCopy.onboardingStep3Motivation,
-                            ),
-                            SizedBox(height: blockSpacing),
-                          ],
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 640),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: topSpacing),
+                          child: Column(
+                            children: [
+                              const ProgressIndicatorWidget(
+                                currentStep: 3,
+                                totalSteps: 3,
+                              ),
+                              SizedBox(height: AppTheme.spacing2XL),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: AppTheme.spacingLG,
+                                  vertical: AppTheme.spacingMD,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppTheme.primary600.withOpacity(0.08),
+                                  borderRadius: BorderRadius.circular(AppTheme.cardBorderRadius),
+                                  border: Border.all(
+                                    color: AppTheme.primary600.withOpacity(0.18),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Icon(
+                                      Icons.star_rate_rounded,
+                                      color: AppTheme.primary700,
+                                      size: 20,
+                                    ),
+                                    SizedBox(width: AppTheme.spacingSM),
+                                    Expanded(
+                                      child: Text(
+                                        'Tap the stars to set your skill level: 1 = Newbie, 2 = Intermediate, 3 = Advanced.',
+                                        style: GoogleFonts.inter(
+                                          fontSize: AppTheme.fontSizeSM,
+                                          fontWeight: AppTheme.fontWeightMedium,
+                                          color: AppTheme.textWhite,
+                                          height: 1.4,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: AppTheme.spacing2XL),
+                              MotivationalTextWidget(
+                                text: AppCopy.onboardingStep3Motivation,
+                              ),
+                              SizedBox(height: blockSpacing),
+                            ],
+                          ),
                         ),
-                      ),
-                      GlassCardWidget(
-                        borderRadius: AppTheme.cardBorderRadius,
-                        padding: cardPadding,
-                        opacity: 1.0,
-                        blurIntensity: 0.0,
-                        child: SizedBox(
-                          height: media.size.height * (isSmall ? 0.65 : 0.7),
+                        GlassCardWidget(
+                          borderRadius: AppTheme.cardBorderRadius,
+                          padding: cardPadding,
+                          opacity: 1.0,
+                          blurIntensity: 0.0,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -192,25 +230,24 @@ class _OnboardingStep3ScreenState extends State<OnboardingStep3Screen>
                                 ),
                               ),
                               SizedBox(height: isSmall ? AppTheme.spacing4XL : AppTheme.spacing5XL),
-                              Expanded(
-                                child: ListView.builder(
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: _sportRatings.length,
-                                  itemBuilder: (context, index) {
-                                    final sportName = _sportRatings.keys.elementAt(index);
-                                    final rating = _sportRatings[sportName]!;
-                                    final icon = _sportIcons[sportName]!;
-                                    
-                                    return SportSelectionItemWidget(
-                                      sportName: sportName,
-                                      icon: icon,
-                                      rating: rating,
-                                      onRatingChanged: (newRating) {
-                                        _handleRatingChanged(sportName, newRating);
-                                      },
-                                    );
-                                  },
-                                ),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: _sportRatings.length,
+                                itemBuilder: (context, index) {
+                                  final sportName = _sportRatings.keys.elementAt(index);
+                                  final rating = _sportRatings[sportName]!;
+                                  final icon = _sportIcons[sportName]!;
+                                  
+                                  return SportSelectionItemWidget(
+                                    sportName: sportName,
+                                    icon: icon,
+                                    rating: rating,
+                                    onRatingChanged: (newRating) {
+                                      _handleRatingChanged(sportName, newRating);
+                                    },
+                                  );
+                                },
                               ),
                               SizedBox(height: AppTheme.spacing3XL),
                               Row(
@@ -233,9 +270,9 @@ class _OnboardingStep3ScreenState extends State<OnboardingStep3Screen>
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(height: AppTheme.spacing2XL),
-                    ],
+                        SizedBox(height: AppTheme.spacing2XL),
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -104,6 +104,7 @@ class _OnboardingStep1ScreenState extends State<OnboardingStep1Screen>
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
               padding: EdgeInsets.fromLTRB(
                 horizontalPadding,
                 AppTheme.spacingXL,

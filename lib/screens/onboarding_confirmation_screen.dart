@@ -100,6 +100,7 @@ class _OnboardingConfirmationScreenState extends State<OnboardingConfirmationScr
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: FadeTransition(
               opacity: _fadeAnimation,
