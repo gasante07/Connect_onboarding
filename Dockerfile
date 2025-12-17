@@ -22,9 +22,10 @@ ENV PATH="${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin:${PATH}"
 
 # Clone Flutter and configure for web (run as root - acceptable in build stage)
 # Using build args allows easy version updates
-RUN git clone https://github.com/flutter/flutter.git -b ${FLUTTER_CHANNEL} ${FLUTTER_HOME} && \
-    flutter config --enable-web --no-analytics && \
-    flutter precache --web
+RUN git clone https://github.com/flutter/flutter.git -b ${FLUTTER_CHANNEL} --depth 1 ${FLUTTER_HOME} && \
+    git config --global --add safe.directory ${FLUTTER_HOME} && \
+    ${FLUTTER_HOME}/bin/flutter config --enable-web --no-analytics && \
+    ${FLUTTER_HOME}/bin/flutter precache --web
 
 WORKDIR /app
 
