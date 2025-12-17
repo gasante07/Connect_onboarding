@@ -192,10 +192,6 @@ class _OnboardingStep3ScreenState extends State<OnboardingStep3Screen>
                                   ],
                                 ),
                               ),
-                              SizedBox(height: AppTheme.spacing2XL),
-                              MotivationalTextWidget(
-                                text: AppCopy.onboardingStep3Motivation,
-                              ),
                               SizedBox(height: blockSpacing),
                             ],
                           ),
