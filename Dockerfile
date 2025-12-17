@@ -40,9 +40,11 @@ RUN echo 'server { \
     } \
 }' > /etc/nginx/conf.d/default.conf
 
-# Prepare nginx cache/temp directories with correct ownership
-RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
-    chown -R nginx:nginx /var/cache/nginx /var/run /var/log/nginx /etc/nginx/conf.d
+# Prepare nginx cache/run/log directories with correct ownership and clean user directive
+RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx /run && \
+    touch /run/nginx.pid && \
+    chown -R nginx:nginx /var/cache/nginx /var/run /var/log/nginx /run /etc/nginx/conf.d && \
+    sed -i '/^user/d' /etc/nginx/nginx.conf
 
 # Copy built files from builder
 COPY --from=builder /app/build/web /usr/share/nginx/html
