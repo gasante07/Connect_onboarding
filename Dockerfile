@@ -1,31 +1,9 @@
-# Build stage - Use official Flutter image or install Flutter simply
-FROM ubuntu:22.04 AS builder
+# Build stage - use official Flutter image to avoid git/ownership issues
+FROM ghcr.io/cirruslabs/flutter:3.24.0 AS builder
 
-# Build arguments for version control
-ARG FLUTTER_VERSION=stable
-ARG FLUTTER_CHANNEL=stable
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    unzip \
-    xz-utils \
-    zip \
-    libglu1-mesa \
-    ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install Flutter SDK
-ENV FLUTTER_HOME=/usr/local/flutter
-ENV PATH="${FLUTTER_HOME}/bin:${FLUTTER_HOME}/bin/cache/dart-sdk/bin:${PATH}"
-
-# Clone Flutter and configure for web (run as root - acceptable in build stage)
-# Using build args allows easy version updates
-RUN git clone https://github.com/flutter/flutter.git -b ${FLUTTER_CHANNEL} --depth 1 ${FLUTTER_HOME} && \
-    git config --global --add safe.directory ${FLUTTER_HOME} && \
-    ${FLUTTER_HOME}/bin/flutter config --enable-web --no-analytics && \
-    ${FLUTTER_HOME}/bin/flutter precache --web
+# Ensure web is enabled and cached
+RUN flutter config --enable-web --no-analytics && \
+    flutter precache --web
 
 WORKDIR /app
 
